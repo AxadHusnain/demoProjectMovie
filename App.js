@@ -1,16 +1,14 @@
 import {StyleSheet, Text, View, Appearance} from 'react-native';
 import React from 'react';
-
+import {NavigationContainer} from '@react-navigation/native';
+import AppNavigator from './src/navigation/AppNavigator';
 const App = () => {
   Appearance.setColorScheme('light');
 
   return (
-    <View>
-      <Text style={{}}>Apps</Text>
-      <Text style={{}}>Apps</Text>
-      <Text style={{}}>Apps</Text>
-      <Text style={{}}>Apps</Text>
-    </View>
+    <NavigationContainer>
+      <AppNavigator />
+    </NavigationContainer>
   );
 };
 
