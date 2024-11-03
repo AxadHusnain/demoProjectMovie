@@ -1,7 +1,6 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import Watch from '../screens/Watch';
 import {StyleSheet, Image} from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -14,6 +13,7 @@ import DashboardIcon from '../assets/icons/Dashboard.png';
 import Dashboard from '../screens/Dashboard';
 import MediaLibrary from '../screens/MediaLibrary';
 import More from '../screens/More';
+import WatchStack from './WatchStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -46,7 +46,7 @@ export default function BottomTabs() {
       />
       <Tab.Screen
         name="Watch"
-        component={Watch}
+        component={WatchStack}
         options={{headerShown: false}}
       />
       <Tab.Screen

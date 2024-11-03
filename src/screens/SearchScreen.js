@@ -3,6 +3,7 @@ import {
   Image,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -12,17 +13,16 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Search from '../assets/icons/Search.png';
+import Close from '../assets/icons/Close.png';
 import api from '../utils/axiosConfig';
-const Watch = ({navigation}) => {
+
+const SearchScreen = () => {
   const [movies, setMovies] = useState([]);
   const getMovieList = () => {
     api
       .get('/movie/upcoming')
       .then(response => {
-        console.log(
-          'response of getting movies from imdb',
-          response.data.results,
-        );
+        console.log('response of getting movies from imdb', response);
         setMovies(response.data?.results);
       })
       .catch(error => {
@@ -33,12 +33,16 @@ const Watch = ({navigation}) => {
     getMovieList();
   }, []);
   return (
-    <View style={styles.main}>
-      <View style={styles.headerView}>
-        <Text style={styles.heading}>Watch</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('SearchScreen')}>
-          <Image source={Search} />
-        </TouchableOpacity>
+    <View style={styles.mainContainer}>
+      <View style={styles.searchBarContainer}>
+        <View style={styles.firstHalfSearch}>
+          <Image style={styles.searchIcon} source={Search} />
+          <TextInput
+            style={styles.inputField}
+            placeholderTextColor="#202C434D"
+            placeholder="TV shows, movies and more"></TextInput>
+        </View>
+        <Image style={styles.closeIcon} source={Close} />
       </View>
       <View style={styles.moviesSection}>
         <FlatList
@@ -55,50 +59,76 @@ const Watch = ({navigation}) => {
               <Text style={styles.title}>{item.title}</Text>
             </TouchableOpacity>
           )}
+          numColumns={2}
+          columnWrapperStyle={styles.columnWrapper}
         />
       </View>
     </View>
   );
 };
 
-export default Watch;
+export default SearchScreen;
 
 const styles = StyleSheet.create({
-  main: {
+  mainContainer: {
     flex: 1,
-    paddingTop: hp(4),
-    backgroundColor: '#FFFFFF',
+
+    backgroundColor: '#F6F6FA',
   },
-  headerView: {
+  searchBarContainer: {
+    marginHorizontal: wp(4),
+    borderWidth: 1,
+    borderColor: '#EFEFEF',
+    height: hp(5.5),
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: hp(3),
+    borderRadius: wp(7),
+    backgroundColor: '#F2F2F6',
+  },
+  firstHalfSearch: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingBottom: hp(2),
-    marginHorizontal: wp(4),
+    // borderWidth: 1,
+    flex: 1,
   },
-  heading: {
-    color: '#202C43',
-    fontFamily: 'Poppins-Medium',
-    fontSize: hp(1.8),
+  searchIcon: {
+    marginLeft: wp(5),
+  },
+  inputField: {
+    marginLeft: wp(2),
+    // fontFamily: 'Poppins-Regular',
+    fontSize: hp(2),
+    textAlignVertical: 'center',
+  },
+  closeIcon: {
+    marginRight: wp(2),
   },
   moviesSection: {
     flex: 1,
     borderTopWidth: 1,
     borderColor: '#EFEFEF',
-    backgroundColor: '#F6F6FA',
-    paddingTop: hp(1.2),
+    // backgroundColor: '#F6F6FA',
+    marginHorizontal: hp(1.5),
+    paddingTop: hp(5.8),
+  },
+  listOfMovies: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   movieContainer: {
-    display: 'flex',
     alignItems: 'center',
     marginTop: hp(2.3),
-    marginHorizontal: wp(4),
+    marginHorizontal: wp(1.5),
     backgroundColor: '#F6F6FA',
   },
   poster: {
-    width: hp(42),
-    height: hp(20),
+    width: hp(20.5),
+    height: hp(10),
     borderRadius: hp(1.2),
   },
   title: {
@@ -108,5 +138,8 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontFamily: 'Poppins-Medium',
     fontSize: hp(2),
+  },
+  columnWrapper: {
+    // justifyContent: 'space-around', // Optional: space between columns
   },
 });
