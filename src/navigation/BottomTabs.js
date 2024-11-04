@@ -20,6 +20,7 @@ const Tab = createBottomTabNavigator();
 export default function BottomTabs() {
   return (
     <Tab.Navigator
+      initialRouteName="Watch"
       screenOptions={({route}) => ({
         tabBarIcon: ({focused}) => {
           let iconSource;

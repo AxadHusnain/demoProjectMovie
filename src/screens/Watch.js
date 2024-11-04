@@ -24,10 +24,6 @@ const Watch = ({navigation}) => {
     api
       .get('/movie/upcoming')
       .then(response => {
-        console.log(
-          'response of getting movies from imdb',
-          response.data.results,
-        );
         setMovies(response.data?.results);
         setLoading(false);
       })

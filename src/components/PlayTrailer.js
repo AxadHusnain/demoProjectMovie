@@ -13,6 +13,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import Loader from './Loader';
 const TrailerPlayer = ({movieId, closeTrailer}) => {
   const [trailerId, setTrailerId] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -20,6 +21,8 @@ const TrailerPlayer = ({movieId, closeTrailer}) => {
 
   useEffect(() => {
     const fetchTrailer = async () => {
+      setLoading(true);
+
       try {
         const response = await api.get(`/movie/${movieId}/videos`);
         const trailers = response.data.results.filter(
@@ -36,10 +39,6 @@ const TrailerPlayer = ({movieId, closeTrailer}) => {
     };
     fetchTrailer();
   }, [movieId]);
-
-  if (loading) {
-    return <ActivityIndicator size="large" color="#61C3F2" />;
-  }
 
   const toggleFullScreen = () => {
     setIsFullScreen(false);
@@ -61,6 +60,7 @@ const TrailerPlayer = ({movieId, closeTrailer}) => {
               </View>
               <YouTube videoId={trailerId} height="100%" play />
             </View>
+            <Loader loading={loading} />
           </Modal>
         </>
       ) : (

@@ -24,13 +24,11 @@ const MovieDetails = props => {
   const [loading, setLoading] = useState(false);
   const [movie, setMovie] = useState(null);
   const [showTrailer, setShowTrailer] = useState(false);
-  console.log('movie id being send', props);
   const getMovieList = () => {
     setLoading(true);
     api
       .get(`/movie/${movieId}`)
       .then(response => {
-        console.log('response of getting movie id from imdb', response.data);
         setMovie(response.data);
         setLoading(false);
       })
@@ -48,10 +46,10 @@ const MovieDetails = props => {
     });
   }
   const getRandomColor = () => {
-    const r = Math.floor(Math.random() * 128); // Random value between 0 and 127
-    const g = Math.floor(Math.random() * 128); // Random value between 0 and 127
-    const b = Math.floor(Math.random() * 128); // Random value between 0 and 127
-    return `rgb(${r}, ${g}, ${b})`; // Return the RGB color string
+    const r = Math.floor(Math.random() * 128);
+    const g = Math.floor(Math.random() * 128);
+    const b = Math.floor(Math.random() * 128);
+    return `rgb(${r}, ${g}, ${b})`;
   };
   const handleWatchTrailer = () => {
     setShowTrailer(true);
