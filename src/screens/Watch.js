@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {
@@ -13,9 +14,13 @@ import {
 } from 'react-native-responsive-screen';
 import Search from '../assets/icons/Search.png';
 import api from '../utils/axiosConfig';
+import Loader from '../components/Loader';
 const Watch = ({navigation}) => {
   const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const getMovieList = () => {
+    setLoading(true);
     api
       .get('/movie/upcoming')
       .then(response => {
@@ -24,9 +29,11 @@ const Watch = ({navigation}) => {
           response.data.results,
         );
         setMovies(response.data?.results);
+        setLoading(false);
       })
       .catch(error => {
         console.error('Error fetching popular movies:', error);
+        setLoading(false);
       });
   };
   useEffect(() => {
@@ -45,7 +52,9 @@ const Watch = ({navigation}) => {
           data={movies}
           keyExtractor={item => item.id.toString()}
           renderItem={({item}) => (
-            <TouchableOpacity style={styles.movieContainer}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('MovieDetails', item.id)}
+              style={styles.movieContainer}>
               <Image
                 source={{
                   uri: `https://image.tmdb.org/t/p/w500${item.poster_path}`,
@@ -57,6 +66,7 @@ const Watch = ({navigation}) => {
           )}
         />
       </View>
+      <Loader loading={loading} />
     </View>
   );
 };
