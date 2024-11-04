@@ -17,11 +17,13 @@ import {
 import backArrow from '../assets/icons/backArrow.png';
 import playBtn from '../assets/icons/PlayBtn.png';
 import Loader from '../components/Loader';
+import PlayTrailer from '../components/PlayTrailer';
 
 const MovieDetails = props => {
   const [movieId, setMovieId] = useState(props.route.params);
   const [loading, setLoading] = useState(false);
   const [movie, setMovie] = useState(null);
+  const [showTrailer, setShowTrailer] = useState(false);
   console.log('movie id being send', props);
   const getMovieList = () => {
     setLoading(true);
@@ -51,6 +53,13 @@ const MovieDetails = props => {
     const b = Math.floor(Math.random() * 128); // Random value between 0 and 127
     return `rgb(${r}, ${g}, ${b})`; // Return the RGB color string
   };
+  const handleWatchTrailer = () => {
+    setShowTrailer(true);
+  };
+  const closeTrailer = () => {
+    setShowTrailer(false);
+  };
+
   useEffect(() => {
     getMovieList();
   }, []);
@@ -77,7 +86,9 @@ const MovieDetails = props => {
                 <Text style={styles.buttonPrimaryText}>Get Tickets</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.buttonSecondary}>
+              <TouchableOpacity
+                onPress={handleWatchTrailer}
+                style={styles.buttonSecondary}>
                 <Image source={playBtn} style={styles.playbtn} />
 
                 <Text style={styles.buttonSecondaryText}> Watch Trailer</Text>
@@ -106,6 +117,10 @@ const MovieDetails = props => {
           <Text style={styles.overViewText}>{movie?.overview}</Text>
         </View>
       </View>
+      {showTrailer && (
+        <PlayTrailer movieId={movieId} closeTrailer={closeTrailer} />
+      )}
+
       <Loader loading={loading} />
     </ScrollView>
   );
@@ -228,6 +243,6 @@ const styles = StyleSheet.create({
   overViewText: {
     color: '#8F8F8F',
     fontFamily: 'Poppins-Regular',
-    fontSize: hp(1.4),
+    fontSize: hp(1.5),
   },
 });
